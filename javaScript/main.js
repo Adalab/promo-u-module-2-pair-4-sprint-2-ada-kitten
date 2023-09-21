@@ -1,23 +1,23 @@
 'use strict'
 
 
-// const kittenImage1 = 'https://dev.adalab.es/gato-siames.webp';
-// const kittenName1 = 'Anastacio';
-// const kittenDesc1 = ' Porte elegante, su patrón de color tan característico y sus ojos de un azul intenso, pero su historia se remonta a Asía al menos hace 500 años, donde tuvo su origen muy posiblemente.';
-// const kittenRace1 = 'Siamés';
+const kittenImage1 = 'https://dev.adalab.es/gato-siames.webp';
+const kittenName1 = 'Anastacio';
+const kittenDesc1 = ' Porte elegante, su patrón de color tan característico y sus ojos de un azul intenso, pero su historia se remonta a Asía al menos hace 500 años, donde tuvo su origen muy posiblemente.';
+const kittenRace1 = 'Siamés';
 
 
 
-// const kittenImage2 = 'https://dev.adalab.es/sphynx-gato.webp';
-// const kittenName2 = 'Fiona';
-// const kittenDesc2 = 'Produce fascinación y curiosidad. Exótico, raro, bello, extraño…hasta con pinta de alienígena han llegado a definir a esta raza gatuna que se caracteriza por la «ausencia» de pelo.';  
-// const kittenRace2 = 'Sphynx';
+const kittenImage2 = 'https://dev.adalab.es/sphynx-gato.webp';
+const kittenName2 = 'Fiona';
+const kittenDesc2 = 'Produce fascinación y curiosidad. Exótico, raro, bello, extraño…hasta con pinta de alienígena han llegado a definir a esta raza gatuna que se caracteriza por la «ausencia» de pelo.';  
+const kittenRace2 = 'Sphynx';
 
 
-// const kittenImage3 = 'https://dev.adalab.es/maine-coon-cat.webp';
-// const kittenName3 = 'Cielo';
-// const kittenDesc3 = 'Tienen la cabeza cuadrada y los ojos simétricos, por lo que su bella mirada se ha convertido en una de sus señas de identidad. Sus ojos son grandes y las orejas resultan largas y en punta.';   
-// const kittenRace3 = 'Main Coon'; 
+const kittenImage3 = 'https://dev.adalab.es/maine-coon-cat.webp';
+const kittenName3 = 'Cielo';
+const kittenDesc3 = 'Tienen la cabeza cuadrada y los ojos simétricos, por lo que su bella mirada se ha convertido en una de sus señas de identidad. Sus ojos son grandes y las orejas resultan largas y en punta.';   
+const kittenRace3 = 'Main Coon'; 
 
 
 
@@ -67,19 +67,25 @@ function handleClickNewCatForm(event) {
 btn.addEventListener('click', handleClickNewCatForm);
 
 
+function addNewKitten(event) { /*nuestra handle function*/
+    event.preventDefault();
+    const newKittenDataObject = {
+        valueDesc: inputDesc.value,
+        valuePhoto: inputPhoto.value,
+        valueName: inputName.value,
+        valueRace: inputRace.value,        
+      };     
+    console.log(`holisss`) /*al dar añadir se imprime Holisss*/
+    kittenDataList.push(newKittenDataObject);
 
-function addNewKitten(event) {
-    const valueDesc = inputDesc.value;
-    const valuePhoto = inputPhoto.value;
-    const valueName = inputName.value;
-    const valueRace = inputRace.value; 
-console.log(`holisss`) /*al dar añadir se imprime Holisss*/
-
-    if (valueDesc === '' || valuePhoto === '' || valueName === '') {
+    if (newKittenDataObject.valueDesc === '' || newKittenDataObject.valuePhoto === '' || newKittenDataObject.valueName === '') {
         labelMessageError.innerHTML= '¡Uy! parece que has olvidado algo :('
-    } else {}
+    } else {labelMessageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
+    }    
 }
+
 btnAddCat.addEventListener('click', addNewKitten);
+
 
  
 const kittenData_1 = {
@@ -104,6 +110,9 @@ const kittenData_1 = {
   };
 
   const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
+  
+
+  
 
 function renderKitten(kittenData) {
     const li = `<li class="card">

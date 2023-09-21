@@ -176,17 +176,35 @@ btn.addEventListener('click', handleClickNewCatForm);
 
 //*segundo ejercicio 2.5 funciones martes*/
 
-function addNewKitten(event) {
-    const valueDesc = inputDesc.value;
-    const valuePhoto = inputPhoto.value;
-    const valueName = inputName.value;
-    const valueRace = inputRace.value; /*porque no está  en if*/
-console.log(`holisss`) /*al dar añadir se imprime Holisss*/
+// function addNewKitten(event) {
+//     const valueDesc = inputDesc.value;
+//     const valuePhoto = inputPhoto.value;
+//     const valueName = inputName.value;
+//     const valueRace = inputRace.value; 
+//     console.log(`holisss`) /*al dar añadir se imprime Holisss*/
 
-    if (valueDesc === '' || valuePhoto === '' || valueName === '') {
+//     if (valueDesc === '' || valuePhoto === '' || valueName === '') {
+//         labelMessageError.innerHTML= '¡Uy! parece que has olvidado algo :('
+//     } else {}
+// }
+
+function addNewKitten(event) { /*nuestra handle function*/
+    event.preventDefault();
+    const newKittenDataObject = {
+        valueDesc: inputDesc.value,
+        valuePhoto: inputPhoto.value,
+        valueName: inputName.value,
+        valueRace: inputRace.value,        
+      };     
+    console.log(`holisss`) /*al dar añadir se imprime Holisss*/
+    kittenDataList.push(newKittenDataObject);
+
+    if (newKittenDataObject.valueDesc === '' || newKittenDataObject.valuePhoto === '' || newKittenDataObject.valueName === '') {
         labelMessageError.innerHTML= '¡Uy! parece que has olvidado algo :('
-    } else {}
+    } else {labelMessageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
+    }    
 }
+
 btnAddCat.addEventListener('click', addNewKitten);
 
 /*
