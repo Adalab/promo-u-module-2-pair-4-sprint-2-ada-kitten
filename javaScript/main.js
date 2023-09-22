@@ -23,6 +23,7 @@ const kittenRace3 = 'Main Coon';
 
 const catsSection = document.querySelector(".js-list");
 const input_search_desc = document.querySelector('.js_in_search_desc');
+const input_search_race = document.querySelector('.js_in_search_race');
 
 
 const btnAddCat = document.querySelector(".js-btn-add");
@@ -133,64 +134,26 @@ function renderKittenList(kittenDataList){
     for (const kittenItem of kittenDataList) {
         catsSection.innerHTML += renderKitten(kittenItem);
     };
+    
 }
 renderKittenList(kittenDataList);
 
 
-// function filterKitten(event) {
-//     event.preventDefault();
-//     const descrSearchText = input_search_desc.value;
-//     catsSection.innerHTML = '';
-
-//     let foundMatch = false; // Variable para rastrear si se encuentra coincidencia
-
-//     for (const kittenItem of kittenDataList) {
-//         if (kittenDesc1.includes(descrSearchText)) {
-//             catsSection.innerHTML = renderKitten(kittenData_1);
-//             foundMatch = true; 
-//         }
-//         if (kittenDesc2.includes(descrSearchText)) {
-//             catsSection.innerHTML = renderKitten(kittenData_2);
-//             foundMatch = true; 
-//         }
-//         if (kittenDesc3.includes(descrSearchText)) {
-//             catsSection.innerHTML = renderKitten(kittenData_3);
-//             foundMatch = true; 
-//         }
-//         if (descrSearchText==="") {catsSection.innerHTML = 'no hay gatos que mostrar';
-//         foundMatch = true; 
-//          }
-//         //  else{catsSection.innerHTML = 'nothing';} PREGUNTAR ESTO
-//     if (!foundMatch) {
-//             catsSection.innerHTML = 'ups! ningún gato coincide'; // Mostrar el mensaje si no se encontraron coincidencias
-//         }
-//     }
-// }
-
-/* asi es como nos lo pedían en el ejerccio, usando kittenItem, pero había que cambiar los kittenDesc1, 2 y 3 por kittenItem.desc*/
-
 function filterKitten(event) {
     event.preventDefault();
     const descrSearchText = input_search_desc.value.toLowerCase(); 
+    const raceSearchText = input_search_race.value.toLowerCase();
+    // const kittenListFilter = kittenDataList.filter((word) => word.desc.includes(descrSearchText));
+    // console.log(kittenListFilter);
     catsSection.innerHTML = '';
-
-    let foundMatch = false; // Variable para rastrear si se encuentra una coincidencia
-
-    for (const kittenItem of kittenDataList) {
-        if (kittenItem.desc.toLowerCase().includes(descrSearchText)) {
-            catsSection.innerHTML += renderKitten(kittenItem);
-            foundMatch = true; // Se encontró una coincidencia
-        }
-        if (descrSearchText==="") {catsSection.innerHTML = 'no hay gatos que mostrar';
-        foundMatch = true; 
-         }
-            }
-
-    if (!foundMatch) {
-        catsSection.innerHTML = 'ups! ningún gato coincide'; // Mostrar el mensaje si no se encontraron coincidencias
-    }
+    
+    const dataKittenFiltered = kittenDataList
+        .filter((word) => word.desc.includes(descrSearchText))
+        .filter(word => word.race === raceSearchText);
+        
+    renderKittenList(dataKittenFiltered);
+    console.log(dataKittenFiltered);
 }
-
 
 
 /* ejercicios que nos faltan de hacer del 2.6 funcions II, empieza aqui abajo el num 2, faltan tmb 3 y 4*/
