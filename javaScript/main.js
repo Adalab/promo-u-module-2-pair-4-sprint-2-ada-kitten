@@ -110,10 +110,9 @@ const kittenData_1 = {
     race: 'Main Coon',
   };
 
-  const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
+//   const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
   
-
-  
+ 
 
 function renderKitten(kittenData) {
     const li = `<li class="card">
@@ -130,11 +129,26 @@ function renderKitten(kittenData) {
     return li;
 }
 
+const GITHUB_USER = '<adalab>';
+const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
+
+let kittenDataList = [];
+/* let kittenDataList = [kittenData_1, kittenData_2, kittenData_3]; --> si dentro del array let kittenDataList metemos los gatos que ya tenemos en el archivo, nos pinta los que tenemos MAS los que vienen nuevos del servidor*/
+
+fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data.results);
+        let kittenDataList = data.results;
+        for(const kittenItem of kittenDataList){
+            catsSection.innerHTML += renderKitten(kittenItem);
+        }        
+    });
+
 function renderKittenList(kittenDataList){
     for (const kittenItem of kittenDataList) {
         catsSection.innerHTML += renderKitten(kittenItem);
-    };
-    
+    };    
 }
 renderKittenList(kittenDataList);
 
@@ -143,16 +157,16 @@ function filterKitten(event) {
     event.preventDefault();
     const descrSearchText = input_search_desc.value.toLowerCase(); 
     const raceSearchText = input_search_race.value.toLowerCase();
-    // const kittenListFilter = kittenDataList.filter((word) => word.desc.includes(descrSearchText));
-    // console.log(kittenListFilter);
     catsSection.innerHTML = '';
     
-    const dataKittenFiltered = kittenDataList
-        .filter((word) => word.desc.includes(descrSearchText))
-        .filter(word => word.race === raceSearchText);
+    const dataKittenFiltered = kittenDataList.filter((word) => word.desc.toLowerCase().includes(descrSearchText))
+    .filter((word) => word.race.toLowerCase().includes(raceSearchText))
+    ;
         
     renderKittenList(dataKittenFiltered);
     console.log(dataKittenFiltered);
+    console.log(descrSearchText);
+    console.log(raceSearchText);
 }
 
 
@@ -178,6 +192,4 @@ function renderRace(race) {
     }else {
         return race;
     }
-}
-
-// kittenRace1.innerHTML = race;.
+}   
