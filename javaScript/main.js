@@ -71,17 +71,19 @@ btn.addEventListener('click', handleClickNewCatForm);
 function addNewKitten(event) { /*nuestra handle function*/
     event.preventDefault();
     const newKittenDataObject = {
-        valueDesc: inputDesc.value,
-        valuePhoto: inputPhoto.value,
-        valueName: inputName.value,
-        valueRace: inputRace.value,        
+        desc: inputDesc.value,
+        photo: inputPhoto.value,
+        name: inputName.value,
+        race: inputRace.value,        
       };     
     console.log(`holisss`) /*al dar añadir se imprime Holisss*/
-    kittenDataList.push(newKittenDataObject);
-
-    if (newKittenDataObject.valueDesc === '' || newKittenDataObject.valuePhoto === '' || newKittenDataObject.valueName === '') {
+    
+      console.log(kittenDataList);
+    if (newKittenDataObject.desc === '' || newKittenDataObject.photo === '' || newKittenDataObject.name === '') {
         labelMessageError.innerHTML= '¡Uy! parece que has olvidado algo :('
     } else {labelMessageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
+    kittenDataList.push(newKittenDataObject);
+    renderKittenList(kittenDataList);
     }    
 }
 
@@ -129,21 +131,11 @@ function renderKitten(kittenData) {
     return li;
 }
 
-const GITHUB_USER = '<adalab>';
+const GITHUB_USER = 'crisrodriguezgar';
 const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
 
 let kittenDataList = [];
 /* let kittenDataList = [kittenData_1, kittenData_2, kittenData_3]; --> si dentro del array let kittenDataList metemos los gatos que ya tenemos en el archivo, nos pinta los que tenemos MAS los que vienen nuevos del servidor*/
-
-fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`)
-    .then((response) => response.json())
-    .then((data) => {
-        console.log(data.results);
-        let kittenDataList = data.results;
-        for(const kittenItem of kittenDataList){
-            catsSection.innerHTML += renderKitten(kittenItem);
-        }        
-    });
 
 function renderKittenList(kittenDataList){
     for (const kittenItem of kittenDataList) {
@@ -152,6 +144,30 @@ function renderKittenList(kittenDataList){
 }
 renderKittenList(kittenDataList);
 
+
+const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
+
+function getDataKitten(){
+    if (kittenListStored !== null) {
+        kittenDataList = kittenListStored;
+        renderKittenList(kittenDataList);
+    } else {
+       fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.results);
+            kittenDataList = data.results;
+            localStorage.setItem('kittenList', JSON.stringify(kittenDataList));
+            renderKittenList(kittenDataList);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        
+    }
+}
+
+getDataKitten();
 
 function filterKitten(event) {
     event.preventDefault();
@@ -192,4 +208,4 @@ function renderRace(race) {
     }else {
         return race;
     }
-}   
+}
