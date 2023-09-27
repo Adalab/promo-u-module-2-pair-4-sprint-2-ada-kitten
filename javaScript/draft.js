@@ -241,30 +241,86 @@ const kittenData_1 = {
     race: 'Main Coon',
   };
 
-  const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
+  // function renderKitten(kittenData) {
+//     const li = `<li class="card">
+//     <article>
+//         <img
+//         class="card_img"
+//         src= "${kittenData.image}" alt="${kittenData.name}"
+//         />
+//         <h3 class="card_title">${kittenData.name}</h3>
+//         <h4 class="card_race">${kittenData.race}</h4>
+//         <p class="card_description">${kittenData.desc}</p>
+//     </article>
+//     </li>`;
+//     return li;
+// }
 
-function renderKitten(kittenData) {
-    const li = `<li class="card">
-    <article>
-        <img
-        class="card_img"
-        src= "${kittenData.image}" alt="${kittenData.name}"
-        />
-            <h3 class="card_title">${kittenData.name}</h3>
-            <h4 class="card_race">${kittenData.race}</h4>
-            <p class="card_description">${kittenData.desc}</p>
-    </article>
-    </li>`;
-    return li;
+function renderKitten(kittenItem) {
+   
+    const liCat = document.createElement('li');
+    catsSection.appendChild(liCat);
+
+    const articleCat = document.createElement('article');
+    liCat.appendChild(articleCat);
+
+    const imgCat = document.createElement('img');
+    imgCat.setAttribute('src', kittenItem.image);
+    imgCat.setAttribute('alt', 'gatos');
+    articleCat.appendChild(imgCat);
+
+    const nameCat = document.createElement('h3');
+    nameCat.textContent = kittenItem.name;
+    articleCat.appendChild(nameCat);    
+
+    const raceCat = document.createElement('h4');
+    raceCat.textContent = kittenItem.race;
+    articleCat.appendChild(raceCat);
+
+    const descCat = document.createElement('p');
+    descCat.textContent = kittenItem.desc;
+    articleCat.appendChild(descCat);
+
+    console.log(kittenItem);
+    return liCat;    
 }
+
+const GITHUB_USER = 'virchaca';
+const SERVER_URL = `https://dev.adalab.es/api/kittens/${GITHUB_USER}`;
+
+let kittenDataList = [];
+
+/* let kittenDataList = [kittenData_1, kittenData_2, kittenData_3]; --> si dentro del array let kittenDataList metemos los gatos que ya tenemos en el archivo, nos pinta los que tenemos MAS los que vienen nuevos del servidor*/
 
 function renderKittenList(kittenDataList){
-    for (const kittenItem of kittenDataList) {
-        catsSection.innerHTML += renderKitten(kittenItem);
-    };
+for (const kittenItem of kittenDataList) {
+    catsSection.innerHTML += renderKitten(kittenItem);
+};    
 }
+
 renderKittenList(kittenDataList);
 
+const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
+
+function getDataKitten(){
+if (kittenListStored !== null) {
+    kittenDataList = kittenListStored;
+    renderKittenList(kittenDataList);
+} else {
+   fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`)
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data.results);
+        kittenDataList = data.results;
+        localStorage.setItem('kittenList', JSON.stringify(kittenDataList));
+        renderKittenList(kittenDataList);
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+}
+getDataKitten();
 
 // catsSection.innerHTML+= renderKitten(kittenDataList[0]) + renderKitten(kittenDataList[1]) + renderKitten(kittenDataList[2]);
 // Lo hemos comentado porque tenemos el bucle arriba
@@ -323,30 +379,44 @@ renderKittenList(kittenDataList);
     
     /* asi es como nos lo pedían en el ejerccio, usando kittenItem, pero había que cambiar los kittenDesc1, 2 y 3 por kittenItem.desc*/
     
+    // function filterKitten(event) {
+    //     event.preventDefault();
+    //     const descrSearchText = input_search_desc.value;
+    //     catsSection.innerHTML = '';
+    
+    //     let foundMatch = false; // Variable para rastrear si se encuentra una coincidencia
+    
+    //     for (const kittenItem of kittenDataList) {
+    //         if (kittenItem.desc.includes(descrSearchText)) {
+    //             catsSection.innerHTML += renderKitten(kittenItem);
+    //             foundMatch = true; // Se encontró una coincidencia
+    //         }
+    //         if (descrSearchText==="") {catsSection.innerHTML = 'no hay gatos que mostrar';
+    //         foundMatch = true; 
+    //          }
+    //             }
+    
+    //     if (!foundMatch) {
+    //         catsSection.innerHTML = 'ups! ningún gato coincide'; // Mostrar el mensaje si no se encontraron coincidencias
+    //     }
+    // }
+
     function filterKitten(event) {
         event.preventDefault();
-        const descrSearchText = input_search_desc.value;
+        const descrSearchText = input_search_desc.value.toLowerCase(); 
+        const raceSearchText = input_search_race.value.toLowerCase();
         catsSection.innerHTML = '';
-    
-        let foundMatch = false; // Variable para rastrear si se encuentra una coincidencia
-    
-        for (const kittenItem of kittenDataList) {
-            if (kittenItem.desc.includes(descrSearchText)) {
-                catsSection.innerHTML += renderKitten(kittenItem);
-                foundMatch = true; // Se encontró una coincidencia
-            }
-            if (descrSearchText==="") {catsSection.innerHTML = 'no hay gatos que mostrar';
-            foundMatch = true; 
-             }
-                }
-    
-        if (!foundMatch) {
-            catsSection.innerHTML = 'ups! ningún gato coincide'; // Mostrar el mensaje si no se encontraron coincidencias
-        }
+        
+        const dataKittenFiltered = kittenDataList.filter((word) => word.desc.toLowerCase().includes(descrSearchText))
+        .filter((word) => word.race.toLowerCase().includes(raceSearchText))
+        ;
+            
+        renderKittenList(dataKittenFiltered);
+        console.log(dataKittenFiltered);
+        console.log(descrSearchText);
+        console.log(raceSearchText);
     }
-
-
-
+    
 
 
 /* ejercicios que nos faltan de hacer del 2.6 funcions II, empieza aqui abajo el num 2, faltan tmb 3 y 4*/
