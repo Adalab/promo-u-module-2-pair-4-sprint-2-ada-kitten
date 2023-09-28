@@ -66,23 +66,54 @@ btn.addEventListener('click', handleClickNewCatForm);
 function addNewKitten(event) { /*nuestra handle function*/
     event.preventDefault();
     const newKittenDataObject = {
-        valueDesc: inputDesc.value,
-        valuePhoto: inputPhoto.value,
-        valueName: inputName.value,
-        valueRace: inputRace.value,        
+        desc: inputDesc.value,
+        photo: inputPhoto.value,
+        name: inputName.value,
+        race: inputRace.value,        
       };     
     console.log(`holisss`) /*al dar añadir se imprime Holisss*/
-    kittenDataList.push(newKittenDataObject);
-
-    if (newKittenDataObject.valueDesc === '' || newKittenDataObject.valuePhoto === '' || newKittenDataObject.valueName === '') {
+    
+    if (newKittenDataObject.desc === '' || newKittenDataObject.photo === '' || newKittenDataObject.name === '') {
         labelMessageError.innerHTML= '¡Uy! parece que has olvidado algo :('
     } else {labelMessageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
+    kittenDataList.push(newKittenDataObject); 
+    
+    // fetch con POST y localStorage
+    
+   /*fetch(`https://dev.adalab.es/api/kittens/${GITHUB_USER}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(newKittenDataObject),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success===true) {
+                const newKittenDataObject = {
+                    desc: inputDesc.value,
+                    photo: inputPhoto.value,
+                    name: inputName.value,
+                    race: inputRace.value,        
+                };     
+                kittenDataList.push(newKittenDataObject); 
+                localStorage.setItem('kittenNew', JSON.stringify(newKittenDataObject));
+
+            //Completa y/o modifica el código:
+            //Agrega el nuevo gatito al listado
+            //Guarda el listado actualizado en el local stoarge
+            //Visualiza nuevamente el listado de gatitos
+            //Limpia los valores de cada input
+
+          } else {
+            labelMessageError.innerHTML= '¡Uy! parece que algo ha salido mal :('
+          }
+      });  */  
+    renderKittenList(kittenDataList);
     }    
 }
 
 btnAddCat.addEventListener('click', addNewKitten);
 
- 
+
 const kittenData_1 = {
     image: 'https://dev.adalab.es/gato-siames.webp',
     name: 'Anastacio',
@@ -110,7 +141,8 @@ const kittenData_1 = {
 function renderKitten(kittenItem) {
    
     const liCat = document.createElement('li');
-    catsSection.appendChild(liCat);
+    liCat.setAttribute('class', 'card');
+    // catsSection.appendChild(liCat);
     
     const articleCat = document.createElement('article');
     liCat.appendChild(articleCat);
@@ -118,18 +150,22 @@ function renderKitten(kittenItem) {
     const imgCat = document.createElement('img');
     imgCat.setAttribute('src', kittenItem.image);
     imgCat.setAttribute('alt', 'gatos');
+    imgCat.setAttribute('class', 'card_img')
     articleCat.appendChild(imgCat);
     
     const nameCat = document.createElement('h3');
     nameCat.textContent = kittenItem.name;
+    nameCat.setAttribute('class','card_title');
     articleCat.appendChild(nameCat);    
     
     const raceCat = document.createElement('h4');
     raceCat.textContent = kittenItem.race;
+    raceCat.setAttribute('class','card_race');
     articleCat.appendChild(raceCat);
     
     const descCat = document.createElement('p');
     descCat.textContent = kittenItem.desc;
+    descCat.setAttribute('class','card_description');
     articleCat.appendChild(descCat);
 
     console.log(kittenItem);
@@ -144,8 +180,9 @@ let kittenDataList = [];
 /* let kittenDataList = [kittenData_1, kittenData_2, kittenData_3]; --> si dentro del array let kittenDataList metemos los gatos que ya tenemos en el archivo, nos pinta los que tenemos MAS los que vienen nuevos del servidor*/
 
 function renderKittenList(kittenDataList){
+    catsSection.innerHTML = '';
     for (const kittenItem of kittenDataList) {
-        catsSection.innerHTML += renderKitten(kittenItem);
+        catsSection.appendChild(renderKitten(kittenItem));
     };    
 }
 
