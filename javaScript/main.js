@@ -22,7 +22,11 @@ const kittenRace3 = 'Main Coon';
 const catsSection = document.querySelector(".js-list");
 const input_search_desc = document.querySelector('.js_in_search_desc');
 const input_search_race = document.querySelector('.js_in_search_race');
+const btn_reset = document.querySelector('.js-btn-reset');
 
+const addKittenSection = document.getElementById('addKitten');
+const btn = document.querySelector('.js-btn-newForm');
+const newForm = document.querySelector('.js-form');
 
 const btnAddCat = document.querySelector(".js-btn-add");
 const inputDesc = document.querySelector('.js-input-desc');
@@ -42,15 +46,22 @@ btnCancel.addEventListener('click', () => {
 }); 
 
 
-const btn = document.querySelector('.js-btn-newForm');
-const newForm = document.querySelector('.js-form'); 
 
 function showNewCatForm() {
     newForm.classList.remove('collapsed');
+    addKittenSection.scrollIntoView({behavior: 'smooth'});
 }
 function hideNewCatForm() {
     newForm.classList.add('collapsed');
 }
+
+document.addEventListener('click', (event) => {
+    if (!newForm.classList.contains('collapsed') 
+        && !newForm.contains(event.target) 
+        && !btn.contains(event.target)) {
+        newForm.classList.add('collapsed');
+    }
+});
 
 function handleClickNewCatForm(event) {
     event.preventDefault();
@@ -75,7 +86,7 @@ function addNewKitten(event) { /*nuestra handle function*/
     
     if (newKittenDataObject.desc === '' || newKittenDataObject.photo === '' || newKittenDataObject.name === '') {
         labelMessageError.innerHTML= '¡Uy! parece que has olvidado algo :('
-    } else {labelMessageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
+    } else {labelMessageError.innerHTML = 'Tenemos un nuevo gato!';
     kittenDataList.push(newKittenDataObject); 
     
     // fetch con POST y localStorage
@@ -217,15 +228,33 @@ function filterKitten(event) {
     const raceSearchText = input_search_race.value.toLowerCase();
     catsSection.innerHTML = '';
     
+    if (descrSearchText === "" && raceSearchText === "") {
+        catsSection.innerHTML = 'mete datos para buscar';
+        return;
+    }
+
     const dataKittenFiltered = kittenDataList.filter((word) => word.desc.toLowerCase().includes(descrSearchText))
     .filter((word) => word.race.toLowerCase().includes(raceSearchText))
     ;
-        
-    renderKittenList(dataKittenFiltered);
-    console.log(dataKittenFiltered);
-    console.log(descrSearchText);
-    console.log(raceSearchText);
+    
+    if (dataKittenFiltered.length === 0) {
+        catsSection.innerHTML = 'ups! no tenemos coincidencias';
+       } else {
+        renderKittenList(dataKittenFiltered);
+    };
+
+    // console.log(dataKittenFiltered);
+    // console.log(descrSearchText);
+    // console.log(raceSearchText);
 }
+btn_reset.addEventListener('click', (e)=>{
+    e.preventDefault();
+    input_search_desc.value="";
+    input_search_race.value="";
+    renderKittenList(kittenDataList);
+});
+
+
 
 
 /* ejercicios que nos faltan de hacer del 2.6 funcions II, empieza aqui abajo el num 2, faltan tmb 3 y 4*/

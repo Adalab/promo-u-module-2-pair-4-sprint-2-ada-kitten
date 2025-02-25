@@ -1,5 +1,5 @@
 :root {
-  --color-green: #14d9c4;
+  --color-secondary: #5a2574;
   font-family: 'Rubik', sans-serif;
   font-size: 14px;
   color: grey;
@@ -75,7 +75,7 @@ li {
   font-size: 72px;
 }
 .about-us .subtitle {
-  color: var(--color-green);
+  color: var(--color-secondary);
   font-size: 36px;
 }
 
@@ -156,7 +156,7 @@ li {
 }
 
 .footer {
-  background-color: var(--color-green);
+  background-color: var(--color-secondary);
   height: 30px;
   width: 100%;
   display: flex;
@@ -195,12 +195,12 @@ li {
 .input {
   margin: 5px;
   padding: 5px;
-  border: 0.5px solid var(--color-green);
+  border: 0.5px solid var(--color-secondary);
   color: grey;
 }
 
 .button {
-  background-color: var(--color-green);
+  background-color: var(--color-secondary);
   border: none;
   padding: 5px;
   margin: 5px;
